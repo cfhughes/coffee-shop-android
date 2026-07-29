@@ -3,7 +3,9 @@ spring:
     name: coffee-shop-server
 
   datasource:
-    url: jdbc:postgresql://capstone-do-user-4787316-0.j.db.ondigitalocean.com:25060/coffee2352
+    url: jdbc:postgresql://localhost:5432/coffee
+    username: myuser
+    password: ilovecoffee
 
   jpa:
     open-in-view: false
@@ -22,3 +24,7 @@ spring:
 server:
   servlet:
     context-path: /apis
+
+security:
+  jwt:
+    ttl: PT3H

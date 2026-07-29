@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: coffeeshopdb
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: ilovecoffee
+      POSTGRES_DB: coffee
+    ports:
+      - "5432:5432"
+    volumes:
+      # Map the local schema file to the container initialization directory
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      # Persist your database data locally so it survives container restarts
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
