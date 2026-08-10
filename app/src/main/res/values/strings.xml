@@ -10,4 +10,19 @@
   <string name="email_address">Email address</string>
   <string name="password">Password</string>
   <string name="sign_in">Sign in</string>
+  <string name="create_account">Create account</string>
+  <string name="sign_up_to_get_started">Sign up to get started</string>
+  <string name="full_name">Full name</string>
+  <string name="confirm_password">Confirm password</string>
+  <string name="sign_up">Sign up</string>
+  <string name="dont_have_account">Don\'t have an account? Sign up</string>
+  <string name="already_have_account">Already have an account? Sign in</string>
+  <string name="welcome_message">Welcome, %1$s!</string>
+  <string name="signed_in_confirmation">You are signed in.</string>
+  <string name="sign_out">Sign out</string>
+  <string name="shop_image">Shop Image</string>
+  <string name="coffee_shop_title">Coffee Shop</string>
+  <string name="this_coffee_shop">This coffee shop....</string>
+  <string name="title_name">Name</string>
+  <string name="email_title">Email</string>
 </resources>

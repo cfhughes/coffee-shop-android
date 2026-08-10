@@ -49,24 +49,24 @@ class JwtConverterTest {
   @Test
   void convertsExistingProfile() {
     Profile profile = new Profile();
-    when(repository.findByName("stable-name")).thenReturn(Optional.of(profile));
+    when(repository.findByEmail("stable@example.com")).thenReturn(Optional.of(profile));
 
-    var authentication = converter.convert(jwt(Map.of("name", "stable-name")));
+    var authentication = converter.convert(jwt(Map.of("email", "stable@example.com")));
 
     assertSame(profile, authentication.getPrincipal());
-    verify(repository).findByName("stable-name");
+    verify(repository).findByEmail("stable@example.com");
   }
 
   @Test
   void rejectsUnknownProfile() {
-    when(repository.findByName("unknown")).thenReturn(Optional.empty());
+    when(repository.findByEmail("unknown@example.com")).thenReturn(Optional.empty());
 
     assertThrows(OAuth2AuthenticationException.class,
-        () -> converter.convert(jwt(Map.of("name", "unknown"))));
+        () -> converter.convert(jwt(Map.of("email", "unknown@example.com"))));
   }
 
   @Test
-  void rejectsMissingName() {
+  void rejectsMissingEmail() {
     assertThrows(OAuth2AuthenticationException.class,
         () -> converter.convert(jwt(Map.of("sub", "subject"))));
   }

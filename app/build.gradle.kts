@@ -22,8 +22,50 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.openapi)
     alias(libs.plugins.schema.parser)
     alias(libs.plugins.junit)
+}
+
+val openApiOutputDirectory = layout.buildDirectory.dir(
+    project.property("openApiOutputDirectory") as String
+)
+val openApiSpecification = layout.projectDirectory.file(
+    project.property("openApiSpecification") as String
+).asFile.absolutePath
+
+openApiGenerate {
+    generatorName.set(project.property("openApiGeneratorName") as String)
+    library.set(project.property("openApiLibrary") as String)
+    inputSpec.set(openApiSpecification)
+    outputDir.set(openApiOutputDirectory.get().asFile.absolutePath)
+    apiPackage.set(project.property("openApiApiPackage") as String)
+    modelPackage.set(project.property("openApiModelPackage") as String)
+    modelNameSuffix.set(project.property("openApiModelNameSuffix") as String)
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to project.property("openApiSerializationLibrary") as String,
+            "useCoroutines" to project.property("openApiUseCoroutines") as String,
+            "dateLibrary" to project.property("openApiDateLibrary") as String,
+            "documentationProvider" to "none",
+            "hideGenerationTimestamp" to "true"
+        )
+    )
+    globalProperties.set(
+        mapOf(
+            "apis" to "",
+            "models" to "",
+            "apiDocs" to "false",
+            "apiTests" to "false",
+            "modelDocs" to "false",
+            "modelTests" to "false",
+            "supportingFiles" to "CollectionFormats.kt"
+        )
+    )
+}
+
+openApiValidate {
+    inputSpec.set(openApiSpecification)
 }
 
 android {
@@ -75,11 +117,24 @@ android {
         }
     }
 
+    sourceSets {
+        named("main") {
+            kotlin.directories.add(
+                openApiOutputDirectory.get().dir("src/main/kotlin").asFile.absolutePath
+            )
+        }
+    }
+
+}
+
+tasks.named("preBuild") {
+    dependsOn(tasks.named("openApiGenerate"))
 }
 
 kotlin {
     compilerOptions {
         jvmTarget = JvmTarget.valueOf("JVM_${libs.versions.java.get()}")
+        freeCompilerArgs.add("-Xannotation-default-target=param-property")
     }
 }
 

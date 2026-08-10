@@ -8,7 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
@@ -57,8 +59,9 @@ public class Shop {
   private Set<Visit> visits = new LinkedHashSet<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
-  private Set<Favorite> favorites = new LinkedHashSet<>();
+  @ManyToMany(mappedBy = "favorites", fetch = FetchType.LAZY)
+  @OrderBy("name ASC")
+  private final Set<Profile> favorites = new LinkedHashSet<>();
 
   public UUID getId() {
     return id;
@@ -132,12 +135,8 @@ public class Shop {
     this.visits = visits;
   }
 
-  public Set<Favorite> getFavorites() {
+  public Set<Profile> getFavorites() {
     return favorites;
-  }
-
-  public void setFavorites(Set<Favorite> favorites) {
-    this.favorites = favorites;
   }
 
   @Override

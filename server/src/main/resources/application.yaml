@@ -17,14 +17,8 @@ spring:
 
   profiles:
     active:
+      - service
       - local
-  web:
-    error:
-      include-message: never
-server:
-  servlet:
-    context-path: /apis
-
-security:
-  jwt:
-    ttl: PT3H
+    group:
+      ddl:
+        - local

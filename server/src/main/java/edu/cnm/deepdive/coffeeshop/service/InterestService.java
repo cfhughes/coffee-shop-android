@@ -1,14 +1,15 @@
 package edu.cnm.deepdive.coffeeshop.service;
 
-import edu.cnm.deepdive.coffeeshop.model.entity.Interest;
-import edu.cnm.deepdive.coffeeshop.model.entity.Profile;
+import edu.cnm.deepdive.coffeeshop.model.dto.InterestCreateDto;
+import edu.cnm.deepdive.coffeeshop.model.dto.InterestDto;
 import java.util.List;
+import java.util.UUID;
 
 public interface InterestService {
 
-  Interest getInterests(Interest interest);
+  InterestDto getInterest(UUID interestId);
 
-  List<Interest> getAllInterests(Profile profile);
+  List<InterestDto> getAllInterests();
 
-  Interest preferredInterest(Profile profile);
+  InterestDto createInterest(InterestCreateDto interest);
 }

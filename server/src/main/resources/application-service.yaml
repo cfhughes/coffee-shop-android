@@ -1,0 +1,8 @@
+spring:
+  web:
+    error:
+      include-message: never
+
+security:
+  jwt:
+    ttl: PT3H

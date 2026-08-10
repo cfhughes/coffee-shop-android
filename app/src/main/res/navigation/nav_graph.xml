@@ -2,6 +2,57 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/nav_graph"
-  app:startDestination="@id/fragment_sign_in">
+  app:startDestination="@id/signInFragment">
+
+  <fragment
+    android:id="@+id/signInFragment"
+    android:name="edu.cnm.deepdive.coffeeshop.controller.SignInFragment"
+    android:label="@string/sign_in">
+    <action
+      android:id="@+id/action_signInFragment_to_signUpFragment"
+      app:destination="@id/signUpFragment" />
+    <action
+      android:id="@+id/action_signInFragment_to_loggedInFragment"
+      app:destination="@id/loggedInFragment"
+      app:popUpTo="@id/nav_graph"
+      app:popUpToInclusive="true" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/signUpFragment"
+    android:name="edu.cnm.deepdive.coffeeshop.controller.SignUpFragment"
+    android:label="@string/create_account">
+    <action
+      android:id="@+id/action_signUpFragment_to_loggedInFragment"
+      app:destination="@id/loggedInFragment"
+      app:popUpTo="@id/nav_graph"
+      app:popUpToInclusive="true" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/loggedInFragment"
+    android:name="edu.cnm.deepdive.coffeeshop.controller.LoggedInFragment"
+    android:label="@string/signed_in_confirmation">
+    <action
+      android:id="@+id/action_loggedInFragment_to_signInFragment"
+      app:destination="@id/signInFragment"
+      app:popUpTo="@id/nav_graph"
+      app:popUpToInclusive="true" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/profile_page_Fragment"
+    android:name="edu.cnm.deepdive.coffeeshop.ui.profile.ProfilePage"
+    android:label="@string/profile">
+    <action
+      android:id="@+id/action_profile_page_Fragment_to_signUpFragment"
+      app:destination="@id/signUpFragment"/>
+    <action
+      android:id="@+id/action_profile_page_Fragment_to_signInFragment"
+      app:destination="@id/signInFragment"/>
+    <action
+      android:id="@+id/action_profile_page_Fragment_to_loggedInFragment"
+      app:destination="@id/loggedInFragment"/>
+  </fragment>
 
 </navigation>

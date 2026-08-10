@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "visit")
@@ -33,6 +34,7 @@ public class Visit {
   private Profile profile;
 
   @Column(name = "created_at", nullable = false, updatable = false)
+  @CreationTimestamp
   private OffsetDateTime createdAt;
 
   @OneToMany(mappedBy = "visit")

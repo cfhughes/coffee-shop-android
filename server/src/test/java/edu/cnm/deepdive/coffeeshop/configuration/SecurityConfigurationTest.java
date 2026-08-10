@@ -16,7 +16,9 @@
 package edu.cnm.deepdive.coffeeshop.configuration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import java.time.Instant;
@@ -59,6 +61,18 @@ class SecurityConfigurationTest {
     String token = token(OTHER_SECRET, Instant.now().plusSeconds(60));
 
     assertThrows(JwtException.class, () -> decoder(SECRET).decode(token));
+  }
+
+  @Test
+  void encodesPasswordsToFitThePasswordHashColumn() {
+    var encoder = configuration.passwordEncoder();
+
+    String hash = encoder.encode("espresso1");
+
+    assertEquals(97, hash.length());
+    assertTrue(hash.startsWith("$argon2id$v=19$m=65536,t=3,p=4$"));
+    assertTrue(encoder.matches("espresso1", hash));
+    assertFalse(encoder.matches("espresso2", hash));
   }
 
   private org.springframework.security.oauth2.jwt.JwtDecoder decoder(byte[] secret) {

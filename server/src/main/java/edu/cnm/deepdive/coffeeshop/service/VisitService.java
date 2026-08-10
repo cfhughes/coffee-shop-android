@@ -1,14 +1,17 @@
 package edu.cnm.deepdive.coffeeshop.service;
 
+import edu.cnm.deepdive.coffeeshop.model.dto.VisitDto;
+import edu.cnm.deepdive.coffeeshop.model.dto.VisitRequestDto;
 import edu.cnm.deepdive.coffeeshop.model.entity.Profile;
 import edu.cnm.deepdive.coffeeshop.model.entity.Visit;
+import java.util.List;
 import java.util.UUID;
 
 public interface VisitService {
 
-  Visit saveVisit(Visit visit, Profile profile);
+  VisitDto saveVisit(VisitRequestDto visit, UUID profileId);
 
-  Visit getVisit(UUID id);
+  VisitDto getVisit(UUID visitId, UUID profileId);
 
-  Visit getShopVisit(UUID shopId, Profile profile);
+  List<VisitDto> getMyVisits(UUID profileId);
 }

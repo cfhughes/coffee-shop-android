@@ -42,8 +42,9 @@ kotlin {
 
 dependencies {
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+//    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+//    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.79")
 
     implementation(libs.kotlin.reflect)
     implementation(libs.jackson.kotlin)
@@ -54,6 +55,7 @@ dependencies {
     implementation(libs.spring.boot.starter.data.jpa)
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.oauth2.resource.server)
+    implementation(libs.spring.boot.starter.hateoas)
     implementation(libs.flyway.core)
     implementation(libs.flyway.database.postgresql)
 
@@ -80,6 +82,7 @@ openApiGenerate {
     apiPackage.set("${project.group}.controller.api")
     modelPackage.set("${project.group}.model.dto")
     invokerPackage.set("${project.group}.openapi")
+    modelNameSuffix.set("Dto")
     configOptions.set(
         mapOf(
             "interfaceOnly" to "true",

@@ -1,14 +1,20 @@
 package edu.cnm.deepdive.coffeeshop.model.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -36,10 +42,14 @@ public class Profile {
 
   @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
   @OrderBy("createdAt desc")
-  private Set<Visit> visits = new LinkedHashSet<>();
+  private final List<Visit> visits = new LinkedList<>();
 
-  @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
-  private Set<Favorite> favorites = new LinkedHashSet<>();
+  @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE,
+      CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(name = "favorite", joinColumns = @JoinColumn(name = "profile_id"),
+      inverseJoinColumns = @JoinColumn(name = "shop_id"))
+  @OrderBy("name ASC")
+  private final Set<Shop> favorites = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
   private Set<Preference> preferences = new LinkedHashSet<>();
@@ -84,20 +94,12 @@ public class Profile {
     this.passwordHash = passwordHash;
   }
 
-  public Set<Visit> getVisits() {
+  public List<Visit> getVisits() {
     return visits;
   }
 
-  public void setVisits(Set<Visit> visits) {
-    this.visits = visits;
-  }
-
-  public Set<Favorite> getFavorites() {
+  public Set<Shop> getFavorites() {
     return favorites;
-  }
-
-  public void setFavorites(Set<Favorite> favorites) {
-    this.favorites = favorites;
   }
 
   public Set<Preference> getPreferences() {
