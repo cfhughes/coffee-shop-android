@@ -7,7 +7,8 @@ COPY gradle gradle
 COPY settings.gradle.kts build.gradle.kts gradle.properties ./
 COPY server server
 
-RUN chmod +x gradlew \
+RUN mkdir app \
+    && chmod +x gradlew \
     && ./gradlew --no-daemon --configure-on-demand :server:bootJar \
     && find server/build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-plain.jar' \
        -exec cp {} /workspace/app.jar \;
