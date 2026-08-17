@@ -14,4 +14,3 @@ data class Shop (
     val imageUrl: URI? = null,
     var isFavorite: Boolean = false,
 )
-

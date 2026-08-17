@@ -46,7 +46,16 @@
         android:layout_height="wrap_content"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="12sp"
-        tools:text="Local favorite • 4.8 ★" />
+        tools:text="Local favorite • 4.8 ★"/>
+
+      <RatingBar
+        android:id="@+id/ratingBar"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:isIndicator="false" />
 
     </LinearLayout>
 

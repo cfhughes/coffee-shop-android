@@ -9,21 +9,37 @@ import edu.cnm.deepdive.coffeeshop.R;
 import edu.cnm.deepdive.coffeeshop.databinding.ItemShopCardBinding;
 import edu.cnm.deepdive.coffeeshop.model.domain.Shop;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ShopFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
   private List<Shop> shops = new ArrayList<>();
   private final OnFavoriteClickListener favoriteClickListener;
+  private final OnRatingChangedListener ratingChangedListener;
+  private final Map<UUID, Integer> ratings = new HashMap<>();
 
   public ShopFeedAdapter(OnFavoriteClickListener listener) {
-    this.favoriteClickListener = listener;
+    this(listener, null);
+  }
+
+  public ShopFeedAdapter(OnFavoriteClickListener favoriteClickListener,
+      OnRatingChangedListener ratingChangedListener) {
+    this.favoriteClickListener = favoriteClickListener;
+    this.ratingChangedListener = ratingChangedListener;
   }
 
   public void setShops(List<Shop> shops) {
     this.shops = shops;
     notifyDataSetChanged();
+  }
+
+  public void setRatings(Map<UUID, Integer> ratings) {
+    this.ratings.clear();
+    this.ratings.putAll(ratings);
   }
 
   @NonNull
@@ -79,7 +95,14 @@ public class ShopFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           favoriteClickListener.onFavoriteClick(shop, shop.isFavorite());
         }
       });
-
+      binding.ratingBarPreference.setOnRatingBarChangeListener(null);
+      binding.ratingBarPreference.setIsIndicator(ratingChangedListener == null);
+      binding.ratingBarPreference.setRating(ratings.getOrDefault(shop.getId(), 0));
+      binding.ratingBarPreference.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+        if (fromUser && ratingChangedListener != null) {
+          ratingChangedListener.onRatingChanged(shop, Math.round(rating));
+        }
+      });
 
     }
   }
@@ -87,5 +110,10 @@ public class ShopFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   public interface OnFavoriteClickListener {
 
     void onFavoriteClick(Shop shop, boolean isFavorite);
+  }
+
+  public interface OnRatingChangedListener {
+
+    void onRatingChanged(Shop shop, int rating);
   }
 }

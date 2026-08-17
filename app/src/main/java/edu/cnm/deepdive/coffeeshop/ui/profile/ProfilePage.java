@@ -13,8 +13,11 @@ import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.coffeeshop.adapter.ShopFeedAdapter;
 import edu.cnm.deepdive.coffeeshop.databinding.FragmentProfilePageBinding;
 import edu.cnm.deepdive.coffeeshop.model.domain.Profile;
+import edu.cnm.deepdive.coffeeshop.model.domain.Shop;
 import edu.cnm.deepdive.coffeeshop.model.domain.Visit;
 import edu.cnm.deepdive.coffeeshop.viewmodel.ProfileViewModel;
+import edu.cnm.deepdive.coffeeshop.viewmodel.VisitsViewModel;
+import java.util.List;
 
 @AndroidEntryPoint
 public class ProfilePage extends Fragment {
@@ -39,7 +42,9 @@ public class ProfilePage extends Fragment {
     binding.rvFavorites.setLayoutManager(
         new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     );
-    binding.rvVisited.setLayoutManager(new LinearLayoutManager(requireContext()));
+    binding.rvVisited.setLayoutManager(
+        new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    );
     favoritesAdapter = new ShopFeedAdapter((shop, isFavorite) -> {
       viewModel.setFavorite(shop, isFavorite);
     });
@@ -50,10 +55,27 @@ public class ProfilePage extends Fragment {
     binding.rvFavorites.setAdapter(favoritesAdapter);
     binding.rvVisited.setAdapter(visitedAdapter);
     viewModel.getProfile().observe(getViewLifecycleOwner(), (profile) -> {
-      binding.textName.setText(profile.getName());
-      favoritesAdapter.setShops(profile.getFavorites());
-      visitedAdapter.setShops(
-          profile.getVisits().stream().map(Visit::getShop).toList());
+      if (profile != null) {
+        profile.getName();
+        binding.textName.setText(profile.getName());
+        profile.getFavorites();
+        favoritesAdapter.setShops(profile.getFavorites());
+      }
+    });
+
+    VisitsViewModel visitsViewModel = new ViewModelProvider(this).get(VisitsViewModel.class);
+    visitsViewModel.getVisits().observe(getViewLifecycleOwner(), (visits) -> {
+      if (!visits.isEmpty()) {
+        List<Shop> visitedShops = visits.stream()
+            .filter(v -> {
+              v.getShop();
+              return true;
+            })
+            .map(Visit::getShop)
+            .toList();
+
+        visitedAdapter.setShops(visitedShops);
+      }
     });
   }
 
