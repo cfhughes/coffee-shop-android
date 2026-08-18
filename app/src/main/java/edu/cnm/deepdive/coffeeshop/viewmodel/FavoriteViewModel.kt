@@ -23,21 +23,18 @@ class FavoriteViewModel @Inject constructor(private val favoriteService: Favorit
 
     fun fetchFavorites() {
         favoriteService.getFavorites()
-            .thenAccept { _favorites.postValue(it) }
-            .exceptionally {
-                _error.postValue(it)
+            .thenAccept { shops ->
+                shops?.forEach { it.isFavorite = true }
+                _favorites.postValue(shops)
+            }
+            .exceptionally { throwable ->
+                _error.postValue(throwable)
                 null
             }
-//            .whenComplete { shops, throwable ->
-//            if (throwable != null) {
-//                _error.postValue(throwable)
-//            } else if (shops != null) {
-//                _favorites.postValue(shops)
-//            }
-//        }
     }
 
     fun addFavorite(shop: Shop) {
+        shop.isFavorite = true
         favoriteService.addFavorite(shop)
             .thenRun(::fetchFavorites)
             .exceptionally { throwable ->
@@ -47,6 +44,7 @@ class FavoriteViewModel @Inject constructor(private val favoriteService: Favorit
     }
 
     fun removeFavorite(shop: Shop) {
+        shop.isFavorite = false
         favoriteService.removeFavorite(shop)
             .thenRun(::fetchFavorites)
             .exceptionally { throwable ->

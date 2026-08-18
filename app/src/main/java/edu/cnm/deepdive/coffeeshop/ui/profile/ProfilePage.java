@@ -58,8 +58,11 @@ public class ProfilePage extends Fragment {
       if (profile != null) {
         profile.getName();
         binding.textName.setText(profile.getName());
-        profile.getFavorites();
-        favoritesAdapter.setShops(profile.getFavorites());
+        List<Shop> favorites = profile.getFavorites();
+        for (Shop shop : favorites) {
+          shop.setFavorite(true);
+        }
+        favoritesAdapter.setShops(favorites);
       }
     });
 
