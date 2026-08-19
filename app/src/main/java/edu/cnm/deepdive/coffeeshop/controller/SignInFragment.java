@@ -53,6 +53,7 @@ public class SignInFragment extends Fragment {
       }
     });
 
+
     viewModel.getSignedInProfile().observe(getViewLifecycleOwner(), (profile) -> {
       if (profile != null) {
         NavHostFragment.findNavController(this)

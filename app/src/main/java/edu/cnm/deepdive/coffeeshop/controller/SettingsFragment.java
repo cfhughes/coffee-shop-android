@@ -44,7 +44,10 @@ public class SettingsFragment extends Fragment {
 
     binding.switchDarkMode.setChecked(isDarkMode);
     binding.switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      preferences.edit().putBoolean(KEY_DARK_MODE, isChecked).apply();
+      preferences.edit()
+          .putBoolean("key_dark_mode", isChecked)
+          .putBoolean("NAVIGATE_TO_SETTINGS", true)
+          .apply();
       if (isChecked) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
       } else {

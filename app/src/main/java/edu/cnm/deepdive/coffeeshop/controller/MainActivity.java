@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    // 1. Read saved dark mode setting before inflating views
     SharedPreferences prefs = getSharedPreferences("coffee_shop_prefs", MODE_PRIVATE);
     boolean isDarkMode = prefs.getBoolean("key_dark_mode", false);
 
@@ -42,26 +43,34 @@ public class MainActivity extends AppCompatActivity {
 
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
+
     authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+
     NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
         .findFragmentById(R.id.nav_host_fragment);
 
     if (navHostFragment != null) {
       navController = navHostFragment.getNavController();
       NavigationUI.setupWithNavController(binding.bottomNav, navController);
+
+      // 2. Check if we need to return to Settings after dark mode recreation
       boolean navigateToSettings = prefs.getBoolean("NAVIGATE_TO_SETTINGS", false);
-
       if (navigateToSettings) {
-        // Clear flag so it only redirects once
+        // Clear the flag so it only redirects once
         prefs.edit().putBoolean("NAVIGATE_TO_SETTINGS", false).apply();
-
-        // Navigate directly back to Settings Fragment
         navController.navigate(R.id.settingsFragment);
       }
-      // ----------------------------
 
+      // 3. Show/hide bottom bar depending on destination
       navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-        // ... existing destination changed listener code ...
+        int destinationId = destination.getId();
+        boolean isAuthenticatedDestination = destinationId == R.id.loggedInFragment
+            || destinationId == R.id.shopFeedFragment
+            || destinationId == R.id.profilePageFragment
+            || destinationId == R.id.settingsFragment;
+
+        binding.bottomNav.setVisibility(isAuthenticatedDestination ? View.VISIBLE : View.GONE);
+        invalidateOptionsMenu();
       });
       navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
         int destinationId = destination.getId();
