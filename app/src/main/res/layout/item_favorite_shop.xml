@@ -41,12 +41,25 @@
         tools:text="Coffee Shop Name" />
 
       <TextView
+        android:id="@+id/textPreferences"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        tools:text="Oat / Almond Milk • Work / Study Friendly" />
+
+      <TextView
         android:id="@+id/text_shop_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="12sp"
         tools:text="Local favorite • 4.8 ★"/>
+
+
 
       <RatingBar
         android:id="@+id/ratingBar"

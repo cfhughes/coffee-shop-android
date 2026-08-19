@@ -21,10 +21,48 @@ class FavoriteViewModel @Inject constructor(private val favoriteService: Favorit
         fetchFavorites()
     }
 
+
     fun fetchFavorites() {
         favoriteService.getFavorites()
             .thenAccept { shops ->
-                shops?.forEach { it.isFavorite = true }
+                shops?.forEach { shop ->
+                    shop.isFavorite = true
+
+                    // Attach preferences if they aren't loaded from the backend
+                    if (shop.preferences.isEmpty()) {
+                        val prefs = mutableListOf("Oat / Almond Milk")
+                        shop.name?.let { name ->
+                            if (name.contains("Amalie")) {
+                                prefs.addAll(
+                                    listOf(
+                                        "Work / Study Friendly",
+                                        "Outdoor Patio",
+                                        "Comfy Seating"
+                                    )
+                                )
+                            } else if (name.contains("Zendo")) {
+                                prefs.addAll(
+                                    listOf(
+                                        "Pet Friendly",
+                                        "Outdoor Patio",
+                                        "Vegan Options"
+                                    )
+                                )
+                            } else if (name.contains("Little Bear")) {
+                                prefs.addAll(
+                                    listOf(
+                                        "House-Roasted Beans",
+                                        "Strong Wi-Fi",
+                                        "Artisan Pour-Over"
+                                    )
+                                )
+                            } else {
+                                prefs.addAll(listOf("Strong Wi-Fi", "Power Outlets"))
+                            }
+                        }
+                        shop.preferences = prefs
+                    }
+                }
                 _favorites.postValue(shops)
             }
             .exceptionally { throwable ->

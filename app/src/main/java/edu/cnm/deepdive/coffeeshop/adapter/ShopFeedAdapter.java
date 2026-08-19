@@ -1,6 +1,7 @@
 package edu.cnm.deepdive.coffeeshop.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,7 +90,8 @@ public class ShopFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       binding.btnFavorite.setOnClickListener(_ -> {
         shop.setFavorite(!shop.isFavorite());
         binding.btnFavorite.setImageResource(
-          shop.isFavorite() ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off
+            shop.isFavorite() ? android.R.drawable.btn_star_big_on
+                : android.R.drawable.btn_star_big_off
         );
         if (favoriteClickListener != null) {
           favoriteClickListener.onFavoriteClick(shop, shop.isFavorite());
@@ -103,9 +105,25 @@ public class ShopFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           ratingChangedListener.onRatingChanged(shop, Math.round(rating));
         }
       });
-
+      List<String> preferences = shop.getPreferences();
+      if (!preferences.isEmpty()) {
+        String formattedPreferences = String.join(" • ", preferences);
+        binding.textPreferences.setText(formattedPreferences);
+        binding.textPreferences.setVisibility(View.VISIBLE);
+      } else {
+        binding.textPreferences.setVisibility(View.GONE);
+      }
+      if (!preferences.isEmpty()) {
+        String formattedPreferences = String.join(" • ", preferences);
+        binding.textPreferences.setText(formattedPreferences);
+        binding.textPreferences.setVisibility(View.VISIBLE);
+      } else {
+        binding.textPreferences.setVisibility(View.GONE);
+      }
     }
+
   }
+
 
   public interface OnFavoriteClickListener {
 

@@ -49,6 +49,20 @@ public class MainActivity extends AppCompatActivity {
     if (navHostFragment != null) {
       navController = navHostFragment.getNavController();
       NavigationUI.setupWithNavController(binding.bottomNav, navController);
+      boolean navigateToSettings = prefs.getBoolean("NAVIGATE_TO_SETTINGS", false);
+
+      if (navigateToSettings) {
+        // Clear flag so it only redirects once
+        prefs.edit().putBoolean("NAVIGATE_TO_SETTINGS", false).apply();
+
+        // Navigate directly back to Settings Fragment
+        navController.navigate(R.id.settingsFragment);
+      }
+      // ----------------------------
+
+      navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+        // ... existing destination changed listener code ...
+      });
       navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
         int destinationId = destination.getId();
         isAuthenticatedDestination = destinationId == R.id.loggedInFragment

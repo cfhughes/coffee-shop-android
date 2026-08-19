@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:padding="24dp">
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Filter Preferences"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:layout_marginBottom="16dp" />
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:maxHeight="400dp">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <!-- Atmosphere & Work -->
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Atmosphere &amp; Work"
+        android:textStyle="bold"
+        android:textColor="?attr/colorSecondary"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupWork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipWorkStudy"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Work / Study Friendly" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipQuiet"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Quiet Environment" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipComfySeating"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Comfy Seating" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipStrongWifi"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Strong Wi-Fi" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipOutlets"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Power Outlets" />
+
+      </com.google.android.material.chip.ChipGroup>
+
+      <!-- Food & Drink Options -->
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Food &amp; Drink"
+        android:textStyle="bold"
+        android:textColor="?attr/colorSecondary"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupFoodDrink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipHouseRoasted"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="House-Roasted Beans" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipAltMilk"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Oat / Almond Milk" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipGlutenFree"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Gluten-Free Snacks" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipVegan"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Vegan Options" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipMatchaTea"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Matcha / Specialty Tea" />
+
+      </com.google.android.material.chip.ChipGroup>
+
+      <!-- Vibe & Space -->
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vibe &amp; Amenities"
+        android:textStyle="bold"
+        android:textColor="?attr/colorSecondary"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupAmenities"
+        android:layout_width="match_parent"
+        android:layout_height="105dp">
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipPetFriendly"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Pet Friendly"/>
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipDriveThru"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Drive-Thru"/>
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipPourOver"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Artisan Pour-Over"/>
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chipPatio"
+          style="@style/Widget.MaterialComponents.Chip.Filter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Outdoor Patio"/>
+
+      </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+  </ScrollView>
+
+  <!-- Apply Button -->
+  <Button
+    android:id="@+id/btnApplyPreferences"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:text="Apply Filters" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="16dp">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnClearFilters"
+      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_marginEnd="8dp"
+      android:text="Clear Filters" />
+
+
+  </LinearLayout>
+
+</LinearLayout>

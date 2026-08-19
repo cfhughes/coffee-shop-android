@@ -35,7 +35,8 @@ class VisitsViewModel @Inject constructor(private val visitService: VisitService
             lng = -106.6510,
             phone = "505-555-0100",
             imageUrl = null,
-            isFavorite = true
+            isFavorite = true,
+            preferences = listOf ("Work / Study Friendly", "Strong Wi-Fi", "Outdoor Patio")
         )
 
         val shop2 = Shop(
@@ -47,7 +48,8 @@ class VisitsViewModel @Inject constructor(private val visitService: VisitService
             lng = -106.6500,
             phone = "505-555-0102",
             imageUrl = null,
-            isFavorite = false
+            isFavorite = false,
+            preferences = listOf("Vibe/Atmosphere", "Specialty Lattes",)
         )
 
         val shop3 = Shop(

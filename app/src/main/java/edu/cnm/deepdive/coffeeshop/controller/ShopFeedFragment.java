@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.coffeeshop.R;
 import edu.cnm.deepdive.coffeeshop.adapter.ShopFeedAdapter;
 import edu.cnm.deepdive.coffeeshop.model.domain.Shop;
+import edu.cnm.deepdive.coffeeshop.ui.PreferenceBottomSheetDialogFragment;
 import edu.cnm.deepdive.coffeeshop.viewmodel.FavoriteViewModel;
 import edu.cnm.deepdive.coffeeshop.viewmodel.ShopViewModel;
 import edu.cnm.deepdive.coffeeshop.databinding.FragmentShopFeedBinding;
@@ -38,8 +39,9 @@ public class ShopFeedFragment extends Fragment {
   private ShopViewModel shopViewModel;
   private FavoriteViewModel favoriteViewModel;
   private ShopFeedAdapter adapter;
-  private final Map<UUID, Integer> ratings = new HashMap<>();
   private List<Shop> currentShops = new ArrayList<>();
+  private final Map<UUID, Integer> ratings = new HashMap<>();
+  private List<Shop> allShops = new ArrayList<>();
 
   @Nullable
   @Override
@@ -48,17 +50,17 @@ public class ShopFeedFragment extends Fragment {
     binding = FragmentShopFeedBinding.inflate(inflater, container, false);
     loadRatings();
     adapter = new ShopFeedAdapter((shop, isFavorite) -> {
-        if (isFavorite) {
-          favoriteViewModel.addFavorite(shop);
-        } else {
-          favoriteViewModel.removeFavorite(shop);
-        }
-        shopViewModel.fetchAllShops();
-      }, (shop, rating) -> {
-        ratings.put(shop.getId(), rating);
-        saveRating(shop.getId(), rating);
-        displayShops(currentShops);
-      });
+      if (isFavorite) {
+        favoriteViewModel.addFavorite(shop);
+      } else {
+        favoriteViewModel.removeFavorite(shop);
+      }
+      shopViewModel.fetchAllShops();
+    }, (shop, rating) -> {
+      ratings.put(shop.getId(), rating);
+      saveRating(shop.getId(), rating);
+      displayShops(currentShops);
+    });
     binding.rvShopList.setAdapter(adapter);
     return binding.getRoot();
   }
@@ -70,18 +72,108 @@ public class ShopFeedFragment extends Fragment {
     favoriteViewModel = new ViewModelProvider(this).get(FavoriteViewModel.class);
     shopViewModel.getShops()
         .observe(getViewLifecycleOwner(), this::displayShops);
+    getChildFragmentManager().setFragmentResultListener(
+        PreferenceBottomSheetDialogFragment.REQUEST_KEY,
+        getViewLifecycleOwner(),
+        (requestKey, result) -> {
+          List<String> selectedFilters = result.getStringArrayList(
+              PreferenceBottomSheetDialogFragment.BUNDLE_KEY_SELECTED_PREFS
+          );
+          filterShops(selectedFilters);
+        }
+    );
+
+    // Click listener to open the bottom sheet
+    binding.chipPreferences.setOnClickListener(v -> {
+      PreferenceBottomSheetDialogFragment dialog = new PreferenceBottomSheetDialogFragment();
+      dialog.show(getChildFragmentManager(), "PreferenceDialog");
+    });
+
+  }
+
+  private void filterShops(List<String> selectedFilters) {
+    if (selectedFilters == null || selectedFilters.isEmpty()) {
+      // Show all shops if no filter is selected
+      adapter.setShops(allShops);
+      return;
+    }
+
+    List<Shop> filteredList = new ArrayList<>();
+
+    for (Shop shop : allShops) {
+      shop.getPreferences();
+      if (!shop.getPreferences().isEmpty()) {
+        boolean matchesAll = true;
+
+        for (String filter : selectedFilters) {
+          boolean filterFound = false;
+          for (String shopPref : shop.getPreferences()) {
+            // Flexible match (ignores case or partial label differences)
+            if (shopPref.equalsIgnoreCase(filter) || shopPref.toLowerCase().contains(filter.toLowerCase())) {
+              filterFound = true;
+              break;
+            }
+          }
+          if (!filterFound) {
+            matchesAll = false;
+            break;
+          }
+        }
+
+        if (matchesAll) {
+          filteredList.add(shop);
+        }
+      }
+    }
+
+    // Update adapter with filtered list
+    adapter.setShops(filteredList);
   }
 
   private void displayShops(List<Shop> shops) {
     if (shops == null) {
       return;
     }
-    currentShops = new ArrayList<>(shops);
-    currentShops.sort(Comparator
+
+    // 1. Assign preference tags to every shop FIRST
+    for (Shop shop : shops) {
+      List<String> prefs = new ArrayList<>();
+      prefs.add("Oat / Almond Milk"); // Baseline preference for all
+
+      shop.getName();
+      if (shop.getName().contains("Amalie")) {
+        prefs.add("Work / Study Friendly");
+        prefs.add("Outdoor Patio");
+        prefs.add("Comfy Seating");
+      } else if (shop.getName().contains("Zendo")) {
+        prefs.add("Pet Friendly");
+        prefs.add("Outdoor Patio");
+        prefs.add("Vegan Options");
+      } else if (shop.getName().contains("Little Bear")) {
+        prefs.add("House-Roasted Beans");
+        prefs.add("Strong Wi-Fi");
+        prefs.add("Artisan Pour-Over");
+      } else {
+        prefs.add("Strong Wi-Fi");
+        prefs.add("Power Outlets");
+      }
+      shop.setPreferences(prefs);
+    }
+
+    // 2. Save the master list WITH preferences attached
+    this.allShops = new ArrayList<>(shops);
+
+    // 3. Sort a copy for initial display
+    List<Shop> sortedShops = new ArrayList<>(this.allShops);
+    sortedShops.sort(Comparator
         .comparing(Shop::isFavorite).reversed()
         .thenComparing(shop -> ratings.getOrDefault(shop.getId(), 0), Comparator.reverseOrder()));
-    adapter.setRatings(ratings);
-    adapter.setShops(currentShops);
+
+    // 4. Send updated list to the adapter
+    if (ratings != null) {
+      adapter.setRatings(ratings);
+    }
+    adapter.setShops(sortedShops);
   }
 
   private void loadRatings() {
@@ -166,6 +258,7 @@ public class ShopFeedFragment extends Fragment {
         imgShop = itemView.findViewById(R.id.image_shop);
       }
     }
+
   }
 
 

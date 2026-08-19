@@ -40,31 +40,36 @@ public class ShopViewModel extends ViewModel {
             UUID.randomUUID(),
             "Average coffee shop",
             null, null, null, null, null, null,
-            true
-
-        ), new Shop(
+            true,
+            List.of("Work / Study Friendly", "Strong Wi-Fi", "Outdoor Patio") // <-- Add 10th parameter here
+        ),
+        new Shop(
             UUID.randomUUID(),
             "Espresso Express",
             null, null, null, null, null, null,
-            false
+            false,
+            List.of("Drive-Thru", "Oat / Almond Milk")
         ),
         new Shop(
             UUID.randomUUID(),
             "Bean & Brew",
             null, null, null, null, null, null,
-            true
+            false,
+            List.of("House-Roasted Beans", "Power Outlets", "Comfy Seating")
         ),
         new Shop(
             UUID.randomUUID(),
             "Roast & Co.",
             null, null, null, null, null, null,
-            false
+            false,
+            List.of("House-Roasted Beans", "Artisan Pour-Over", "Quiet Environment")
         ),
         new Shop(
             UUID.randomUUID(),
             "The Daily Grind",
             null, null, null, null, null, null,
-            true
+            true,
+            List.of("Work / Study Friendly", "Strong Wi-Fi", "Power Outlets")
         )
     );
   }

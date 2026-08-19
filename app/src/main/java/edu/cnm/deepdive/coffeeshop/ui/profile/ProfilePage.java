@@ -17,6 +17,7 @@ import edu.cnm.deepdive.coffeeshop.model.domain.Shop;
 import edu.cnm.deepdive.coffeeshop.model.domain.Visit;
 import edu.cnm.deepdive.coffeeshop.viewmodel.ProfileViewModel;
 import edu.cnm.deepdive.coffeeshop.viewmodel.VisitsViewModel;
+import java.util.ArrayList;
 import java.util.List;
 
 @AndroidEntryPoint
@@ -58,12 +59,29 @@ public class ProfilePage extends Fragment {
       if (profile != null) {
         profile.getName();
         binding.textName.setText(profile.getName());
-        List<Shop> favorites = profile.getFavorites();
-        for (Shop shop : favorites) {
-          shop.setFavorite(true);
-        }
-        favoritesAdapter.setShops(favorites);
       }
+
+      assert profile != null;
+      List<Shop> favorites = profile.getFavorites();
+      for (Shop shop : favorites) {
+        shop.setFavorite(true);
+
+        // Add preferences to Favorites
+        List<String> prefs = new ArrayList<>();
+        prefs.add("Oat / Almond Milk");
+        shop.getName();
+        if (shop.getName().contains("Amalie")) {
+          prefs.add("Work / Study Friendly");
+          prefs.add("Outdoor Patio");
+        } else if (shop.getName().contains("Zendo")) {
+          prefs.add("Pet Friendly");
+          prefs.add("Outdoor Patio");
+        } else {
+          prefs.add("Strong Wi-Fi");
+        }
+        shop.setPreferences(prefs);
+      }
+      favoritesAdapter.setShops(favorites);
     });
 
     VisitsViewModel visitsViewModel = new ViewModelProvider(this).get(VisitsViewModel.class);
@@ -80,6 +98,7 @@ public class ProfilePage extends Fragment {
         visitedAdapter.setShops(visitedShops);
       }
     });
+
   }
 
   @Override
